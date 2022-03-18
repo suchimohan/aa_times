@@ -1,9 +1,9 @@
-"use strict";
 const router = require("express").Router();
 const sessionRouter = require("./session.js");
 const usersRouter = require("./users.js");
 const testRouter = require("./test");
 const newsRouter = require("./newsapi");
+
 // // GET /api/set-token-cookie
 // const asyncHandler = require('express-async-handler');
 // const { setTokenCookie } = require('../../utils/auth.js');
@@ -17,6 +17,7 @@ const newsRouter = require("./newsapi");
 //   setTokenCookie(res, user);
 //   return res.json({ user });
 // }));
+
 // // GET /api/restore-user
 // const { restoreUser } = require('../../utils/auth.js');
 // router.get(
@@ -26,6 +27,7 @@ const newsRouter = require("./newsapi");
 //     return res.json(req.user);
 //   }
 // );
+
 // // GET /api/require-auth
 // const { requireAuth } = require('../../utils/auth.js');
 // router.get(
@@ -35,8 +37,13 @@ const newsRouter = require("./newsapi");
 //     return res.json(req.user);
 //   }
 // );
-router.use("/test", testRouter);
+
+router.use("/test", testRouter)
+
 router.use("/session", sessionRouter);
+
 router.use("/users", usersRouter);
-router.use("/news", newsRouter);
+
+router.use("/news",newsRouter);
+
 module.exports = router;

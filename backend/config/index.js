@@ -11,4 +11,6 @@ module.exports = {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN,
   },
+  nyTimesAPIKey: process.env.NYTIMES_API_KEY,
+  useRealData: process.env.USE_REAL_DATA == "true"
 };

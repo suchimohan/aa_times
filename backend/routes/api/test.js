@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const router = require("express").Router();
 router.get("/", function (req, res) {
     res.json({ requestBody: addNumbers(1, 2) });
