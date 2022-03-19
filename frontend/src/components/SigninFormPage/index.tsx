@@ -9,10 +9,9 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
 import { Redirect } from "react-router-dom";
-
+import ErrorList from "../ErrorList";
+import Error from "../../models/Error"
 
 
 export default function SignIn() {
@@ -21,7 +20,8 @@ export default function SignIn() {
   const sessionUser = useSelector((state:any) => state.session.user);
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([]);
+  const emptyErrors:Error[]= [];
+  const [errors, setErrors] = useState(emptyErrors);
 
   if (sessionUser) return <Redirect to="/" />;
 
@@ -31,7 +31,13 @@ export default function SignIn() {
     return dispatch(sessionActions.login({ credential, password }))
       .catch(async (res:any) => {
         const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
+        let errorList:Error[]= [];
+        if (data && data.errors) {
+          for (let i = 0; i < data.errors.length; i++) {
+            errorList.push(new Error(i, data.errors[i]))
+          }
+          setErrors(errorList);
+        }
       });
   };
 
@@ -51,17 +57,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign In
           </Typography>
-          <List >
-            {
-              errors.map((value:any)=>(
-                <ListItem
-                  key={value}
-                  disableGutters
-                > {{value}}
-                </ListItem>
-              ))
-            }
-          </List>
+          <ErrorList errors={errors}/>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"

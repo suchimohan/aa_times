@@ -6,8 +6,8 @@ const getTopStories = (news:any) => ({
     news
 })
 
-export const getAllTopStories = () => async (dispatch: any) => {
-    const response = await fetch('/api/news/topstories');
+export const getAllTopStories = (topic:string) => async (dispatch: any) => {
+    const response = await fetch(`/api/news/topstories?topic=${topic}`);
     if (response.ok) {
         const news = await response.json();
         dispatch(getTopStories(news))
@@ -27,4 +27,3 @@ export const articlesReducer = (state={}, action:any)=>{
         return state;
     }
 }
-

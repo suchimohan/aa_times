@@ -2,8 +2,21 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import {useParams} from 'react-router-dom'
 
 function TitleBlock() {
+
+  let params = (useParams() as any);
+
+
+  function isValid(params:any){
+    let topic = ''
+    if (params) {
+      topic = params.topic
+    }
+    if(topic) return topic.toUpperCase()
+    return 'TOP STORIES'
+  }
 
   return (
     <Paper
@@ -15,11 +28,8 @@ function TitleBlock() {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        // backgroundImage: `url(${post.image})`,
       }}
     >
-      {/* Increase the priority of the hero background image */}
-      {/* {<img style={{ display: 'none' }} src={post.image} alt={post.imageText} />} */}
       <Box
         sx={{
           position: 'absolute',
@@ -40,7 +50,7 @@ function TitleBlock() {
             }}
           >
             <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              TOP STORIES
+              {isValid(params)}
             </Typography>
           </Box>
         </Grid>

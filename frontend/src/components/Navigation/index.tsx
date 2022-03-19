@@ -1,10 +1,7 @@
 import * as React from 'react';
-// import { NavLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-// import LoginFormModal from '../LoginFormModal';
-// import './Navigation.css';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -13,14 +10,20 @@ import Typography from '@mui/material/Typography';
 
 class Props{
     isLoaded: any
+    sections: ReadonlyArray<{
+      title: string;
+    }>
 
-    constructor(isLoaded: any) {
+    constructor(isLoaded: any,sections:ReadonlyArray<{title: string;}>) {
         this.isLoaded = isLoaded;
+        this.sections = sections
     }
 };
 
+
 function Navigation(props: Props){
-  const isLoaded = props.isLoaded;
+ const {isLoaded, sections} = props
+  // const isLoaded = props.isLoaded;
   const sessionUser = useSelector((state:any) => state.session.user);
 
   let sessionLinks;
@@ -37,15 +40,11 @@ function Navigation(props: Props){
   }
 
   return (
-    // <ul>
-    //   <li>
-    //     <NavLink exact to="/">Home</NavLink>
-    //     {isLoaded && sessionLinks}
-    //   </li>
-    // </ul>
       <React.Fragment>
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Button size="small">Home</Button>
+          <Button variant="outlined" size="small">
+            <Link href="/">Home</Link>
+          </Button>
           <Typography
             component="h2"
             variant="h5"
@@ -63,6 +62,24 @@ function Navigation(props: Props){
             {isLoaded && sessionLinks}
           </Button>
         </Toolbar>
+        <Toolbar
+        component="nav"
+        variant="dense"
+        sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
+        >
+        {sections.map((section) => (
+          <Link
+            color="inherit"
+            noWrap
+            key={section.title}
+            variant="body2"
+            href={`/topstories/${(section.title).toLowerCase()}`}
+            sx={{ p: 1, flexShrink: 0 }}
+          >
+            {section.title}
+          </Link>
+        ))}
+      </Toolbar>
       </React.Fragment>
   );
 }

@@ -11,6 +11,22 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TitleBlock from './components/TitleBlock';
 
+
+
+const sections = [
+  {title: 'US'},
+  { title: 'Business'},
+  { title: 'Fashion'},
+  { title: 'Health'},
+  { title: 'Movies'},
+  { title: 'Sports'},
+  { title: 'Politics'},
+  { title: 'Technology'},
+  { title: 'Travel'},
+];
+
+
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,12 +42,16 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="lg">
-          <Navigation isLoaded={isLoaded} />
+          <Navigation isLoaded={isLoaded} sections={sections}/>
           {isLoaded && (
           <Switch>
             <Route exact path="/">
-            <TitleBlock />
-            <TopStories/>
+              <TitleBlock />
+              <TopStories/>
+            </Route>
+            <Route exact path="/topstories/:topic">
+              <TitleBlock />
+              <TopStories/>
             </Route>
             <Route path="/login" exact={true}>
               <Signin/>
