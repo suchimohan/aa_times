@@ -1,38 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import SignupFormPage from './components/SignupFormPage';
-// import LoginFormPage from "./components/LoginFormPage";
+import Signin from "./components/SigninFormPage"
+import Signup from "./components/SignupFormPage"
 import * as sessionActions from './store/session';
 import Navigation from './components/Navigation';
-import { Modal } from './context/Modal';
+import TopStories from "./components/TopStories"
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TitleBlock from './components/TitleBlock';
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+
+  const theme = createTheme();
+
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
-      <button onClick={() => setShowModal(true)}>Modal</button>
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
-          <h1>Hello I am a Modal</h1>
-        </Modal>
-      )}
-      {isLoaded && (
-        <Switch>
-          {/* <Route path="/login" >
-            <LoginFormPage />
-          </Route> */}
-          <Route path='/signup'>
-            <SignupFormPage />
-          </Route>
-        </Switch>
-      )}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container maxWidth="lg">
+          <Navigation isLoaded={isLoaded} />
+          {isLoaded && (
+          <Switch>
+            <Route exact path="/">
+            <TitleBlock />
+            <TopStories/>
+            </Route>
+            <Route path="/login" exact={true}>
+              <Signin/>
+            </Route>
+            <Route path='/signup' exact={true}>
+               <Signup/>
+            </Route>
+            <Route path="/">
+              <h2>Page Not Found</h2>
+            </Route>
+          </Switch>
+        )}
+        </Container>
+      </ThemeProvider>
     </>
   );
 }

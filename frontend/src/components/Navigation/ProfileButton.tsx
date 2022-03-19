@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
-function ProfileButton({ user }) {
+class Props{
+    user: any
+
+    constructor(user: any) {
+        this.user = user;
+    }
+};
+
+function ProfileButton(props: Props) {
+  const user = props.user;
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   
@@ -23,7 +32,7 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-  const logout = (e) => {
+  const logout = (e:any) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
   };
