@@ -1,4 +1,3 @@
-import NewsArticle from '../models/NewsArticle';
 const GET_TOP_STORIES = 'news/GET_TOP_STORIES';
 
 const getTopStories = (news:any) => ({

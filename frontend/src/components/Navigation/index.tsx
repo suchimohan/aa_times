@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Link from '@mui/material/Link';
 import { useSelector } from 'react-redux';
-import ProfileButton from './ProfileButton';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -10,26 +9,35 @@ import Typography from '@mui/material/Typography';
 
 class Props{
     isLoaded: any
-    sections: ReadonlyArray<{
-      title: string;
-    }>
 
-    constructor(isLoaded: any,sections:ReadonlyArray<{title: string;}>) {
+    constructor(isLoaded: any) {
         this.isLoaded = isLoaded;
-        this.sections = sections
     }
 };
 
 
 function Navigation(props: Props){
- const {isLoaded, sections} = props
-  // const isLoaded = props.isLoaded;
+ const {isLoaded} = props
   const sessionUser = useSelector((state:any) => state.session.user);
+
+  const sections = [
+    { title: 'US'},
+    { title: 'Business'},
+    { title: 'Fashion'},
+    { title: 'Health'},
+    { title: 'Movies'},
+    { title: 'Sports'},
+    { title: 'Politics'},
+    { title: 'Technology'},
+    { title: 'Travel'},
+  ];
 
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <ProfileButton user={sessionUser} />
+      <>
+        <Link href="/user">{sessionUser.username}</Link>
+      </>
     );
   } else {
     sessionLinks = (
@@ -46,14 +54,17 @@ function Navigation(props: Props){
             <Link href="/">Home</Link>
           </Button>
           <Typography
-            component="h2"
-            variant="h5"
+            variant="h2"
             color="inherit"
             align="center"
             noWrap
-            sx={{ flex: 1 }}
+            sx={{
+              flex: 2,
+              fontWeight: 'bold',
+              fontFamily: 'URW Chancery L, cursive'
+            }}
           >
-            AA TIMES
+            a / A Times
           </Typography>
           <IconButton>
             <SearchIcon />
