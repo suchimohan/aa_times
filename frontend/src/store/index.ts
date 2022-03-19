@@ -2,10 +2,12 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import sessionReducer from './session';
 import {articlesReducer} from './articles';
+import {pinnedReducer} from './pinnedArticle';
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  news : articlesReducer
+  news : articlesReducer,
+  pins: pinnedReducer
 });
 
 let enhancer:any;
@@ -23,4 +25,3 @@ const configureStore = (preloadedState:any) => {
 };
 
 export default configureStore;
-

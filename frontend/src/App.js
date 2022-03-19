@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import Signin from "./components/SigninFormPage"
-import Signup from "./components/SignupFormPage"
+import SigninPage from "./components/SigninFormPage"
+import SignupPage from "./components/SignupFormPage"
+import UserPage from "./components/UserPage";
 import * as sessionActions from './store/session';
 import Navigation from './components/Navigation';
 import TopStories from "./components/TopStories"
@@ -10,22 +11,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TitleBlock from './components/TitleBlock';
-
-
-
-const sections = [
-  {title: 'US'},
-  { title: 'Business'},
-  { title: 'Fashion'},
-  { title: 'Health'},
-  { title: 'Movies'},
-  { title: 'Sports'},
-  { title: 'Politics'},
-  { title: 'Technology'},
-  { title: 'Travel'},
-];
-
-
 
 function App() {
   const dispatch = useDispatch();
@@ -42,22 +27,25 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="lg">
-          <Navigation isLoaded={isLoaded} sections={sections}/>
+          <Navigation isLoaded={isLoaded}/>
           {isLoaded && (
           <Switch>
             <Route exact path="/">
-              <TitleBlock />
+              <TitleBlock title="Top Stories"/>
               <TopStories/>
             </Route>
-            <Route exact path="/topstories/:topic">
-              <TitleBlock />
+            <Route exact path='/topstories/:topic'>
+              <TitleBlock/>
               <TopStories/>
             </Route>
             <Route path="/login" exact={true}>
-              <Signin/>
+              <SigninPage/>
             </Route>
             <Route path='/signup' exact={true}>
-               <Signup/>
+               <SignupPage/>
+            </Route>
+            <Route path='/user' exact={true}>
+               <UserPage/>
             </Route>
             <Route path="/">
               <h2>Page Not Found</h2>

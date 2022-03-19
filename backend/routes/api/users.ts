@@ -1,4 +1,5 @@
-const express = require("express");
+import express from "express";
+const router = express.Router();
 const { check } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
@@ -6,8 +7,6 @@ const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User } = require("../../db/models");
 import {Request, Response} from "express";
-
-const router = express.Router();
 
 const validateSignup = [
   check('email')

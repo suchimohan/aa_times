@@ -23,6 +23,7 @@ let sample_top_stories = [
       "Russia",
       "Kharkiv (Ukraine)"
     ],
+    "image":"https://static01.nyt.com/images/2022/03/16/us/russia-destroying-kharkiv-promo-1647462852245/russia-destroying-kharkiv-promo-1647462852245-superJumbo.jpg",
     "multimedia": [
       {
         "url": "https://static01.nyt.com/images/2022/03/16/us/russia-destroying-kharkiv-promo-1647462852245/russia-destroying-kharkiv-promo-1647462852245-superJumbo.jpg",
@@ -55,7 +56,8 @@ let sample_top_stories = [
         "copyright": ""
       }
     ],
-    "short_url": "https://nyti.ms/3thWyph"
+    "short_url": "https://nyti.ms/3thWyph",
+    "is_favorite": true
   },
   {
     "section": "world",
