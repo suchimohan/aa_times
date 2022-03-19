@@ -10,9 +10,8 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-
+import ErrorList from "../ErrorList";
+import Error from "../../models/Error"
 
 export default function SignUp() {
 
@@ -22,8 +21,8 @@ export default function SignUp() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const emptyState:string[]= [];
-    const [errors, setErrors] = useState(emptyState);
+    const emptyErrors:Error[]= [];
+    const [errors, setErrors] = useState(emptyErrors);
 
     if (sessionUser) return <Redirect to="/" />;
 
@@ -34,10 +33,16 @@ export default function SignUp() {
         return dispatch(sessionActions.signup({ email, username, password }))
           .catch(async (res:any) => {
             const data = await res.json();
-            if (data && data.errors.length) setErrors(data.errors);
+            let errorList:Error[]= [];
+            if (data && data.errors) {
+              for (let i = 0; i < data.errors.length; i++) {
+                errorList.push(new Error(i, data.errors[i]))
+              }
+              setErrors(errorList);
+            }
           });
       }
-      return setErrors(['Confirm Password field must be the same as the Password field']);
+      return setErrors([new Error(0, 'Confirm Password field must be the same as the Password field')]);
     };
 
 
@@ -56,16 +61,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
-          <List >
-            {
-              errors.map((value:any)=>(
-                <ListItem
-                  key={value}
-                > {{value}}
-                </ListItem>
-              ))
-            }
-          </List>
+          <ErrorList errors={errors}/>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>

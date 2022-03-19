@@ -41,7 +41,7 @@ export default function TestTypeScriptComponent() {
   const dispatch = useDispatch();
 
   useEffect(()=>{
-      dispatch(getAllTopStories())
+      dispatch(getAllTopStories('world'))
   },[dispatch])
 
 
