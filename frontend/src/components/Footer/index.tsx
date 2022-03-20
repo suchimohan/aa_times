@@ -38,7 +38,7 @@ export default function Footer() {
                 display="inline"
                 align="center"
                 variant="body1"
-                href="suchimohan91@gmail.com"
+                href="mailto: suchimohan91@gmail.com"
                 sx={{ ml: 0.5 }}
             >
                 <EmailIcon/>
