@@ -38,7 +38,7 @@ export default function ArticleCard(props: Props){
 
     let tooltipTitle = "Pin a article for reading later";
     if(!sessionUser) {
-        tooltipTitle = "Only logged in users can pin articles. Please login"
+        tooltipTitle = "Only logged in users can pin articles. Please login";
     }
 
     const dispatch = useDispatch();
@@ -92,9 +92,11 @@ export default function ArticleCard(props: Props){
                 </CardContent>
                 <CardActions disableSpacing>
                     <Tooltip title={`${tooltipTitle}`}>
-                        <IconButton disabled={!sessionUser} aria-label="pin article" onClick={(e)=>{handlePins(e)}}>
-                            <PushPinIcon  sx={{ color: pinIconColor() }}/>
-                        </IconButton>
+                        <div>
+                            <IconButton disabled={!sessionUser} aria-label="pin article" onClick={(e)=>{handlePins(e)}}>
+                                <PushPinIcon  sx={{ color: pinIconColor() }}/>
+                            </IconButton>
+                        </div>
                     </Tooltip>
                 </CardActions>
             </Card>
