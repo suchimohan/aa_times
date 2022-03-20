@@ -29,6 +29,10 @@ class NewsArticle {
 	altImage() {
 		return "alt-img"
 	}
+
+	copy() {
+		return new NewsArticle(this.title, this.abstract, this.byline, this.short_url, this.image, this.published_date, this.is_favorite);
+	}
 }
 
 export default NewsArticle;

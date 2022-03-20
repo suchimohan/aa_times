@@ -3,9 +3,10 @@ import Link from '@mui/material/Link';
 import { useSelector } from 'react-redux';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
+import {useDispatch} from "react-redux";
+import * as sessionActions from "../../store/session";
+
 
 class Props{
     isLoaded: any
@@ -17,8 +18,9 @@ class Props{
 
 
 function Navigation(props: Props){
- const {isLoaded} = props
+  const {isLoaded} = props
   const sessionUser = useSelector((state:any) => state.session.user);
+  const dispatch = useDispatch() as any;
 
   const sections = [
     { title: 'US'},
@@ -32,17 +34,32 @@ function Navigation(props: Props){
     { title: 'Travel'},
   ];
 
+  const signout = (e:any) => {
+    e.preventDefault();
+    dispatch(sessionActions.logout());
+  };
+
+  const handelDemo = () => {
+    dispatch(sessionActions.login({credential : "demo@user.io", password: "password"}))
+  }
+
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
       <>
-        <Link href="/user">{sessionUser.username}</Link>
+        <Button variant="outlined" size="small">
+          <Link href="/user" style={{ textDecoration: 'none' }}>{sessionUser.username}</Link>
+        </Button>
+        <Button  sx={{ ml: 2 }} variant="outlined" size="small" onClick={(e)=>signout(e)}>Sign Out</Button>
       </>
     );
   } else {
     sessionLinks = (
       <>
-        <Link href="/login"> Sign in </Link>
+        <Button variant="outlined" size="small">
+          <Link href="/login" style={{ textDecoration: 'none' }}> Sign in </Link>
+        </Button>
+        <Button  sx={{ ml: 2 }} variant="outlined" size="small" onClick={()=>handelDemo()}>Demo</Button>
       </>
     );
   }
@@ -51,7 +68,7 @@ function Navigation(props: Props){
       <React.Fragment>
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Button variant="outlined" size="small">
-            <Link href="/">Home</Link>
+            <Link style={{ textDecoration: 'none' }} href="/">Home</Link>
           </Button>
           <Typography
             variant="h2"
@@ -61,17 +78,14 @@ function Navigation(props: Props){
             sx={{
               flex: 2,
               fontWeight: 'bold',
-              fontFamily: 'URW Chancery L, cursive'
+              fontFamily: 'Rockwell Extra Bold'
             }}
           >
             a / A Times
           </Typography>
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-          <Button variant="outlined" size="small">
+          <Toolbar>
             {isLoaded && sessionLinks}
-          </Button>
+          </Toolbar>
         </Toolbar>
         <Toolbar
         component="nav"

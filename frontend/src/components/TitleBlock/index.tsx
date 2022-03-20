@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 class Props{
     title: string
 
-    constructor(title: any) {
+    constructor(title?: any) {
         this.title = title;
     }
 };
@@ -21,7 +21,7 @@ function TitleBlock(props: Props) {
       if(["us"].includes(str)) {
         return str.toUpperCase();
       }
-      return str.substr(0,1).toUpperCase() + str.substr(1);
+      return str.substring(0,1).toUpperCase() + str.substring(1);
   }
 
   function getTopic(params:any){
