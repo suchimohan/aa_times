@@ -21,12 +21,15 @@ const { User, PinnedArticles } = require('../../db/models');
 router.get('/', restoreUser, asyncHandler(function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { user } = req;
-        const pins = yield PinnedArticles.findAll({
+        let pins = yield PinnedArticles.findAll({
             where: {
                 userId: user.id
             },
             include: [{ model: User }]
         });
+        for (let i = 0; i < pins.length; i++) {
+            pins[i].dataValues.is_favorite = true;
+        }
         return res.json(pins);
     });
 }));
@@ -43,13 +46,29 @@ router.post('/', handleValidationErrors, restoreUser, asyncHandler(function (req
             image: article.image,
             published_date: article.published_date,
         });
-        const pinnedArticle = yield PinnedArticles.findAll({
+        return res.json(pin);
+    });
+}));
+router.delete('/', handleValidationErrors, restoreUser, asyncHandler(function (req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { user } = req;
+        const article = req.body;
+        const pinnedArticle = yield PinnedArticles.findOne({
             where: {
-                id: pin.id
-            },
-            include: [{ model: User }]
+                userId: user.id,
+                short_url: article.short_url
+            }
         });
-        return res.json(pinnedArticle);
+        if (pinnedArticle) {
+            yield pinnedArticle.destroy();
+            return res.status(204).end();
+        }
+        else {
+            const err = {
+                status: 404
+            };
+            next(err);
+        }
     });
 }));
 module.exports = router;

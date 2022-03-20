@@ -1,26 +1,29 @@
 import express from "express";
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
-import {Request, Response} from "express";
+import {Request, Response, NextFunction} from "express";
 const { handleValidationErrors } = require('../../utils/validation');
 const { restoreUser } = require('../../utils/auth');
 const { User, PinnedArticles } = require('../../db/models');
 
 router.get('/',restoreUser,asyncHandler(async function(req: Request,res: Response){
     const {user} = req as any
-    const pins = await PinnedArticles.findAll({
+    let pins = await PinnedArticles.findAll({
         where: {
             userId : user.id
         },
         include: [{model: User}]
     })
+    for (let i=0; i<pins.length; i++) {
+        pins[i].dataValues.is_favorite = true;
+    }
     return res.json(pins);
 }))
 
 
 router.post('/',handleValidationErrors,restoreUser,asyncHandler(async function(req: Request,res: Response){
     const { user } = req as any;
-    const article = req.body
+    const article = req.body;
     const pin = await PinnedArticles.create({
         userId : user.id,
         title: article.title,
@@ -31,16 +34,28 @@ router.post('/',handleValidationErrors,restoreUser,asyncHandler(async function(r
 	    published_date: article.published_date,
     })
 
-    const pinnedArticle = await PinnedArticles.findAll({
-        where: {
-            id : pin.id
-        },
-        include: [{model: User}]
-    })
-
-    return res.json(pinnedArticle)
+    return res.json(pin);
 
 }))
 
+router.delete('/',handleValidationErrors,restoreUser,asyncHandler(async function(req: Request,res: Response, next: NextFunction){
+    const { user } = req as any;
+    const article = req.body;
+    const pinnedArticle = await PinnedArticles.findOne({
+        where: {
+            userId : user.id,
+            short_url: article.short_url
+        }
+    })
+    if (pinnedArticle) {
+        await pinnedArticle.destroy();
+        return res.status(204).end();
+    } else {
+        const err = {
+            status: 404
+        }
+        next(err);
+    }
+}));
 
 module.exports = router;

@@ -11,9 +11,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TitleBlock from './components/TitleBlock';
+import Footer from './components/Footer'
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch() as any;
   const [isLoaded, setIsLoaded] = useState(false);
 
   const theme = createTheme();
@@ -23,7 +24,6 @@ function App() {
   }, [dispatch]);
 
   return (
-    <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="lg">
@@ -33,10 +33,12 @@ function App() {
             <Route exact path="/">
               <TitleBlock title="Top Stories"/>
               <TopStories/>
+              <Footer />
             </Route>
             <Route exact path='/topstories/:topic'>
-              <TitleBlock/>
+              <TitleBlock title= "" />
               <TopStories/>
+              <Footer />
             </Route>
             <Route path="/login" exact={true}>
               <SigninPage/>
@@ -46,6 +48,7 @@ function App() {
             </Route>
             <Route path='/user' exact={true}>
                <UserPage/>
+               <Footer />
             </Route>
             <Route path="/">
               <h2>Page Not Found</h2>
@@ -54,7 +57,6 @@ function App() {
         )}
         </Container>
       </ThemeProvider>
-    </>
   );
 }
 

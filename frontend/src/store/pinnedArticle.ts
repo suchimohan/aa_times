@@ -4,6 +4,7 @@ import { csrfFetch } from './csrf';
 
 const GET_PINS = 'pins/GET_PINS'
 const SAVE_PINS = 'pins/SAVE_PINS';
+const DELETE_PINS = 'pins/DELETE_PINS';
 
 const getPins = (pinnedArticles:any) => ({
     type: GET_PINS,
@@ -12,6 +13,12 @@ const getPins = (pinnedArticles:any) => ({
 
 const savePins = (pinnedArticle:any) => ({
     type: SAVE_PINS,
+    pinnedArticle
+})
+
+
+const deletePins = (pinnedArticle:any) => ({
+    type: DELETE_PINS,
     pinnedArticle
 })
 
@@ -28,7 +35,7 @@ export const savePinnedArticle = (article:NewsArticle) => async (dispatch:any) =
         method: "POST",
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify(article)
-    })
+    });
     if(response.ok) {
         const pinnedArticle = await response.json();
         dispatch(savePins(pinnedArticle))
@@ -36,17 +43,34 @@ export const savePinnedArticle = (article:NewsArticle) => async (dispatch:any) =
     }
 }
 
+export const deletePinnedArticle = (article:NewsArticle) => async (dispatch:any) => {
+    const response = await csrfFetch(`/api/pinnedArticles`, {
+        method: "DELETE",
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(article)
+    });
+    if(response.ok) {
+        dispatch(deletePins(article))
+        return article
+    }
+}
+
 export const pinnedReducer = (state={},action:any)=>{
-    let newState:{[key:number]:any} = {}
+    let newState:{[key:string]:any} = {}
     switch(action.type){
         case GET_PINS: {
             action.pinnedArticles.forEach((pin:any)=>{
-                newState[pin.id] = pin
+                newState[pin.short_url] = pin
             })
             return newState;
         }
         case SAVE_PINS: {
-            newState[action.pinnedArticle.id] = action.pinnedArticle
+            newState[action.pinnedArticle.short_url] = action.pinnedArticle;
+            return newState;
+        }
+        case DELETE_PINS: {
+            newState = {...state};
+            delete newState[action.pinnedArticle.short_url];
             return newState;
         }
         default:

@@ -34,7 +34,7 @@ export default function TopStories() {
     <Container sx={{ py: 8 }}>
         <Grid container spacing={2}>
             {newsArticles.map((article:NewsArticle) => (
-                <ArticleCard key={`${article.short_url}`} article = {article}/>
+                <ArticleCard key={`article-${article.short_url}`} article = {article}/>
             ))}
         </Grid>
     </Container>
