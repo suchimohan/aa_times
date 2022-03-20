@@ -4,7 +4,10 @@ Features:
 1. User can **browse** news in various topics like "US", "Health", "Technology" etc.
 1. User can **pin** news article. this will save the news articles so that the user can read it later.
 
-This application is hosted at [aA-Times](https://aa-times.herokuapp.com/)
+This application is hosted at https://aa-times.herokuapp.com/
+
+## Sample API Request / Response
+[SAMPLE_REQUEST_RESPONSE.md](SAMPLE_REQUEST_RESPONSE.md)
 
 ## App ScreenShots
 
